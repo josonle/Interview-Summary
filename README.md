@@ -13,10 +13,10 @@
 
 ## 历程
 
-### 2-28日
+### 2-28日：每个人都在努力都在奋不顾身，不是只有你受尽委屈
 
 - 计划一星期复习java基础
-  - 看完了《核心技术卷一》的一到五章，记录见：[读书](https://github.com/josonle/Interview-Preparation/tree/master/%E8%AF%BB%E4%B9%A6)
+  - 看完了《核心技术卷一》的一到四章，记录见：[读书](https://github.com/josonle/Interview-Preparation/tree/master/%E8%AF%BB%E4%B9%A6)
 - 看了下B站上的左程云的算法课——排序
   - 找到了几个算法相关资源
     - Leetcode刷题

@@ -8,7 +8,7 @@ public class HelloWorld {
 	enum SIZE {
 		Max, Min, Media
 	}
-
+	
 	public static void main(String[] args) {
 		System.out.println("Hello World");
 		System.out.println(7 / 2. + "," + Math.pow(2, 3));
