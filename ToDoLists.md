@@ -4,6 +4,12 @@
 
 ## 大数据框架
 
+- Hdfs、MapReduce
+- Hive
+- Spark
+- Yarn
+- Kafka
+
 ## Scala
 
 ## 算法及数据结构
