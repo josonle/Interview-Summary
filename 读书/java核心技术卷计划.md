@@ -577,6 +577,8 @@ Object类中equals是判断两个对象是否具有相同的引用（即两对�
 
 如果重新定义 equals 方法 , 就必须重新定义 hashCode 方法, 以便用户可以将对插入到散列表中
 
+> 见：[重写equals方法的时候为什么需要重写hashcode](https://www.jianshu.com/p/75d9c2c3d0c1)
+
 简单的话，可以直接写作：
 ```java
 public int hashCode(){
@@ -585,6 +587,10 @@ public int hashCode(){
 ```
 
 如果是数组类型的域，可以用Arrays.hashCode(...)计算数组的散列值（有数组元素的散列值组成）
+
+> 重写hashCode方法时会看到很多地方会乘以一个数（31）
+>
+> [为什么 String hashCode 方法选择数字31作为乘子](https://segmentfault.com/a/1190000010799123) 
 
 #### toString方法
 
@@ -636,3 +642,117 @@ Integer 、 Long 、 Float 、 Double 、 Short 、 Byte 、 Character 、 Void 
 - 可变参数数量？？？（Int ... values）
 
 不过是写在最后一个参数位置，允许将一个数组传递给可变参数方法的最后一个参数，编译器会将该参数绑定到数组上, 并在必要的时候进行自动装箱
+
+
+
+### 接口
+
+必须是public的，关键字interface。其中方法默认是public，所以可以不写public，实现该接口的类必须实现接口中**所有方法**）。可定义常量，但不能包含实例域或静态方法。
+
+> 接口中方法自动public，数据自动public static final化
+>
+> java 8 后可以在接口中定义静态方法
+>
+> **类只能有一个超类，但可实现多个接口**
+>
+> 常用接口有Comparable（compareTo方法）、Comparator（compare方法）、Cloneable（clone方法）
+>
+> Cloneable 接口 它没有指定clone 方法, 这个方法是从 Object 类继承的。其实java提供的**标记接口**（标记接口不包含任何方法; 它唯一的作用就是允许在类型查询中使用 instanceof）
+>
+> Object也提供一个clone方法用以对象的拷贝，但是protected的，**提供对象的浅拷贝**。所有当类中含有其他类对象的引用时浅拷贝就不行了，此时要实现Cloneable接口重新定义一个public的clone方法（深拷贝）
+>
+> ![1551626172914](assets/1551626172914.png)
+>
+> 如果在一个对象上调用 clone , 但这个对象的类并没有实现 Cloneable 接口 , Object 类的 clone 方法就会拋出一个 CloneNotSupportedException
+
+实现接口的类，必须实现接口中所有方法，且**必须是public的**
+
+```java
+public interface A<T>{//可以使用泛型类型，也可以不加。不加的话默认是Object，在方法是现实时要手动将Object类型转换成所需对象类型
+    int AGE = 18;//static final int AGE
+    ...
+    void B(...);
+    int C(T other);
+    ...
+}
+//实现接口关键字implements
+class aA implements A<aA>{
+    ...
+    public void B(...){...}
+    public int C(aA other){...}
+}
+```
+
+
+
+> 两个数值比较时
+>
+> 如果是整数可以直接相减，但要注意整数的范围不能过大 （比如都不是负整数，或绝对值不超过 (Integer.MAX_VALUE-1)/2 ）, 以避免造成减法运算的溢出；否则就要用Integer.compare方法。
+>
+> 
+>
+> 如果是浮点数比较，不能直接相减，相减接近零时会四舍五入为零，直接用Double.compare方法
+
+- 接口不是类，所以不能new一个什么接口对象，但是可以创建一个接口变量引用实现该接口的类对象。
+
+- 可通过instanceof判断对象是否实现了某接口
+
+- 接口也可以被扩展(继承) `public interface B extends A{}`
+
+- **可以为接口中方法提供默认实现，要用到default关键字**
+
+  ```java
+  public interface A{
+  	...
+      default void bFunc(){
+          System.out.println("...");
+      }
+  }
+  ```
+
+  感觉没啥用，类中实现时还得覆盖
+
+**接口和超类有同名、相同参数类型的方法，讲究类优先**
+
+`class C extends A implements B`如果A、B中有上述方法，只考虑超类A的方法
+
+
+
+### lambda表达式：用以java支持函数式编程
+
+lambda表达式的形式：参数（小括号括起）、箭头（->）、表达式（可用{}括起）
+
+- 无参数也要用空括号()
+- 一个表达式写不下可以用{}括起，并包含显示的return语句
+- 如果可以推导出一个 lambda 表达式的参数类型, 则可以忽略其类型
+- 如果方法只有一 参数 , 而且这个参数的类型可以推导得出 , 那么甚至还可以省略小括号
+- 无需指定 lambda 表达式的返回类型。lambda 表达式的返回类型总是会由上下文推导得出
+- 如果一个 lambda 表达式只在某些分支返回一个值, 而在另外一些分支不返回值,这是不合法的 。 例如：`( int x ) -> { if (x >= 0 ) return 1 ; } `就不合法 
+- 在 lambda 表达式中是可以用代码块外部的变量的, 但只能引用值不会改变的变量（避免并发时不安全问题）
+- lambda表达式中this参数问题
+   ![1551628646433](assets/1551628646433.png)
+
+
+
+### 内部类：类中类
+
+优势：
+
+- 内部类方法可以访问该类定义所在的作用域中的数据, 包括私有的数据
+-  内部类可以对同一个包中的其他类隐藏起来 
+- 当想要定义一个回调函数且不想编写大量代码时, 使用匿名 ( anonymous）内部类比较便捷
+
+
+
+只有内部类可以是私有类, 而常规类只可以具有包可见性 , 或公有可见性
+
+
+
+并非每个外部类对象都包含内部类的实例域，前提是要调用方法（外部类的方法）实例化内部类
+
+- 局部内部类：定义在方法中的类，有点是完全隐藏，只有该方法可访问它  **局部类不能用 public 或 private 访问说明符进行声明，直接写class就好了**
+  - 好有个优势是可以访问方法的局部变量，但必须是final的
+- 匿名内部类
+- 静态内部类
+
+> 感觉核心卷这里讲的有点复杂？？？？还是看博客吧
