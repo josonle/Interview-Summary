@@ -523,7 +523,7 @@ if ( staff[1] instanceof Manager)//判断staff[1]能否引用Manager对象，前
 }
 ```
 
-抽象类
+#### 抽象类
 
 - abstract关键字
 
@@ -531,6 +531,9 @@ if ( staff[1] instanceof Manager)//判断staff[1]能否引用Manager对象，前
   public abstract Persion{
   	...
       public abstract void print();
+      void print_(){
+          //实现
+      }
       ...
   }
   
@@ -543,15 +546,17 @@ if ( staff[1] instanceof Manager)//判断staff[1]能否引用Manager对象，前
 
 - 包含一个或多个抽象方法的类本身必须被声明为抽象的，抽象方法只是起占位作用，具体实现在子类中。类即使不含抽象方法, 也可以将类声明为抽象类
 
+  - abstract不能与private、static、final或native共同修饰同一个方法，**因为要被继承**
+
 - 抽象类还可以包含具体数据和具体方法（不建议有）
 
 - 申明为abstract**的抽象类不能被实例化**，但可以创建一个抽象类的对象变量, 用来引用非抽象子类的对象
 
   ```java
-  Persion p = new Man(...);//这里p因为不能构造Person对象，最终还是指向Man对象，所以可以调用Man的方法
+  Persion p = new Man(...);//这里p因为不能构造Person对象，最终还是指向Man对象，所以可以调用Man的方法 （动态绑定，多态的一种）
   ```
 
-  **待测试？？？？？？？**
+- 抽象类不一定有抽象方法，但抽象方法一定属于抽象类。抽象类中的非抽象方法一定要给出实现
 
 ### 所有类的超类 Object
 
@@ -647,7 +652,7 @@ Integer 、 Long 、 Float 、 Double 、 Short 、 Byte 、 Character 、 Void 
 
 ### 接口
 
-必须是public的，关键字interface。其中方法默认是public，所以可以不写public，实现该接口的类必须实现接口中**所有方法**）。可定义常量，但不能包含实例域或静态方法。
+必须是public的，关键字interface。其中方法默认是public，所以可以不写public，实现该接口的类必须实现接口中**所有非default方法**）。可定义常量，但不能包含实例域或静态方法。
 
 > 接口中方法自动public，数据自动public static final化
 >
@@ -665,7 +670,7 @@ Integer 、 Long 、 Float 、 Double 、 Short 、 Byte 、 Character 、 Void 
 >
 > 如果在一个对象上调用 clone , 但这个对象的类并没有实现 Cloneable 接口 , Object 类的 clone 方法就会拋出一个 CloneNotSupportedException
 
-实现接口的类，必须实现接口中所有方法，且**必须是public的**
+实现接口的类，必须实现接口中所有非default方法，且**必须是public的**
 
 ```java
 public interface A<T>{//可以使用泛型类型，也可以不加。不加的话默认是Object，在方法是现实时要手动将Object类型转换成所需对象类型
@@ -708,9 +713,10 @@ class aA implements A<aA>{
           System.out.println("...");
       }
   }
+  //实际编程时，最好把接口单一文件。public类是程序入口，所以不能再在该文件下写一个public的接口/类等
   ```
 
-  感觉没啥用，类中实现时还得覆盖
+  感觉没啥用，实现类可以选择覆盖该方法
 
 **接口和超类有同名、相同参数类型的方法，讲究类优先**
 
@@ -750,9 +756,126 @@ lambda表达式的形式：参数（小括号括起）、箭头（->）、表达
 
 并非每个外部类对象都包含内部类的实例域，前提是要调用方法（外部类的方法）实例化内部类
 
-- 局部内部类：定义在方法中的类，有点是完全隐藏，只有该方法可访问它  **局部类不能用 public 或 private 访问说明符进行声明，直接写class就好了**
-  - 好有个优势是可以访问方法的局部变量，但必须是final的
-- 匿名内部类
-- 静态内部类
+- 局部内部类：定义在方法或作用域中的类，有点是完全隐藏，只有该方法可访问它  **局部类不能用 public 或 private 访问说明符进行声明，直接写class就好了**
 
-> 感觉核心卷这里讲的有点复杂？？？？还是看博客吧
+  - 好有个优势是可以访问方法的局部变量，但必须是final的
+
+- 匿名内部类：无访问修饰符、无类名
+
+  - 无类名所以没有构造器
+  - **当所在的方法的形参需要被内部类里面使用时，该形参必须为final**
+  - 使用匿名内部类时，必须是继承一个类或者是实现一个接口
+
+  > 参考：
+  >
+  > [java提高篇(八)----详解内部类](https://www.cnblogs.com/chenssy/p/3388487.html)
+  >
+  > [java提高篇(十)-----详解匿名内部类](https://www.cnblogs.com/chenssy/p/3390871.html)
+
+- 静态内部类：static修饰的内部类，也叫嵌套内部类
+
+  - 创建不依靠外围类
+  - 只能访问外围类的静态数据、方法
+  - **与常规内部类不同 , 静态内部类可以有静态域和方法**
+
+  ```java
+  public class OuterClass {
+      private String sex;
+      public static String name = "chenssy";
+      
+      /**
+       *静态内部类
+       */
+      static class InnerClass1{
+          /* 在静态内部类中可以存在静态成员 */
+          public static String _name1 = "chenssy_static";
+          
+          public void display(){
+              /* 
+               * 静态内部类只能访问外围类的静态成员变量和方法
+               * 不能访问外围类的非静态成员变量和方法
+               */
+              System.out.println("OutClass name :" + name);
+          }
+      }
+      
+      /**
+       * 非静态内部类
+       */
+      class InnerClass2{
+          /* 非静态内部类中不能存在静态成员 */
+          public String _name2 = "chenssy_inner";
+          /* 非静态内部类中可以调用外围类的任何成员,不管是静态的还是非静态的 */
+          public void display(){
+              System.out.println("OuterClass name：" + name);
+          }
+      }
+      
+      /**
+       * @desc 外围类方法
+       * @author chenssy
+       * @data 2013-10-25
+       * @return void
+       */
+      public void display(){
+          /* 外围类访问静态内部类：内部类. */
+          System.out.println(InnerClass1._name1);
+          /* 静态内部类 可以直接创建实例不需要依赖于外围类 */
+          new InnerClass1().display();
+          
+          /* 非静态内部的创建需要依赖于外围类 */
+          OuterClass.InnerClass2 inner2 = new OuterClass().new InnerClass2();
+          /* 方位非静态内部类的成员需要使用非静态内部类的实例 */
+          System.out.println(inner2._name2);
+          inner2.display();
+      }
+      
+      public static void main(String[] args) {
+          OuterClass outer = new OuterClass();
+          outer.display();
+      }
+  }
+  ----------------
+  Output:
+  chenssy_static
+  OutClass name :chenssy
+  chenssy_inner
+  OuterClass name：chenssy
+  ```
+
+> 感觉核心卷这里讲的有点复杂，找到上面列出的博客，感觉还是不错的
+
+《Think in Java》中由以下几点内部类优势：
+
+​      **1、**内部类可以用多个实例，每个实例都有自己的状态信息，并且与其他外围对象的信息相互独立。
+
+​      **2、**在单个外围类中，可以让多个内部类以不同的方式实现同一个接口，或者继承同一个类。
+
+​      **3、**创建内部类对象的时刻并不依赖于外围类对象的创建。
+
+​      **4、**内部类并没有令人迷惑的“is-a”关系，他就是一个独立的实体。
+
+​      **5、**内部类提供了更好的封装，除了该外围类，其他类都不能访问。
+
+最大优势是内部类使得多重继承的解决方案变得更加完整
+
+
+
+- **如何实例化内部类**
+
+```java
+OuterClass.InnerClass inner = outer.new InnerClass();//outer是OuterClass实例对象
+# 我看到如下，外部类中定义一个获取内部类的方法（建议）
+ public InnerClass getInnerClass(){
+        return new InnerClass();
+ }
+```
+
+**外围类作用域外通过OuterClass.InnerClass来引用内部类，内部类中通过OuterClass.this来定义外围类的引用**
+
+- **内部类中声明的所有静态域都必须是 final，不能有static方法**（Java 语言规范对这个限制没有做任何解释。也可以允许有静态方法 , 但只能访问外围类的静态域、方法）
+
+
+
+内部类是个编译时的概念，一旦编译成功后，它就与外围类属于两个完全不同的类（当然他们之间还是有联系的）。对于一个名为OuterClass的外围类和一个名为InnerClass的内部类，在编译成功后，会出现这样两个class文件：OuterClass.class和OuterClass$InnerClass.class
+
