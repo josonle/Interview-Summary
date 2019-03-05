@@ -556,7 +556,47 @@ if ( staff[1] instanceof Manager)//判断staff[1]能否引用Manager对象，前
   Persion p = new Man(...);//这里p因为不能构造Person对象，最终还是指向Man对象，所以可以调用Man的方法 （动态绑定，多态的一种）
   ```
 
-- 抽象类不一定有抽象方法，但抽象方法一定属于抽象类。抽象类中的非抽象方法一定要给出实现
+- **抽象类不一定有抽象方法，但抽象方法一定属于抽象类。抽象类中的非抽象方法一定要给出实现**
+
+- 抽象类可以有构造器、静态方法。构造器能被子类继承并完成初始化，但不会创建抽象类的实例对象。静态方法的好处是不实例化就可由子类类名直接调用
+
+  - 抽象类直接使用省去了实例化过程
+  - 抽象类中的静态方法是存在内存中的，用的时候直接去内存中去取
+  - 如果想拿抽象类直接使用，类中就得定义静态方法
+
+  ```java
+  abstract class abstractClass{
+  	abstract void print();
+  	public abstractClass() {//抽象类中可以定义构造器，虽然不能初始化，任然可被子类继承
+  		System.out.println("abstract class");
+  	}
+  	public static void aFunc() {
+  		System.out.println("i am static func");
+  	}
+  }
+  public class AbstractClassTest extends abstractClass{
+  	public AbstractClassTest() {
+  		// TODO Auto-generated constructor stub
+  		System.out.println("子类构造器");
+  	}
+  	@Override
+  	void print() {
+  		// TODO Auto-generated method stub
+  		System.out.println("test");
+  	}
+  	public static void main(String[] args) {
+  		// TODO Auto-generated method stub
+  		AbstractClassTest.aFunc();//抽象类中可以定义静态方法，可直接由类名调用
+  		new AbstractClassTest().print();
+  	}
+  }
+  //output：
+  abstract class
+  子类构造器
+  test
+  ```
+
+  
 
 ### 所有类的超类 Object
 
@@ -756,9 +796,9 @@ lambda表达式的形式：参数（小括号括起）、箭头（->）、表达
 
 并非每个外部类对象都包含内部类的实例域，前提是要调用方法（外部类的方法）实例化内部类
 
-- 局部内部类：定义在方法或作用域中的类，有点是完全隐藏，只有该方法可访问它  **局部类不能用 public 或 private 访问说明符进行声明，直接写class就好了**
+- 局部内部类：**<u>定义在方法或作用域中的类</u>**，有点是完全隐藏，只有该方法可访问它  **局部类不能用 public 或 private 访问说明符进行声明，直接写class就好了**
 
-  - 好有个优势是可以访问方法的局部变量，但必须是final的
+  - 有个优势是可以访问方法的局部变量，但必须是final的
 
 - 匿名内部类：无访问修饰符、无类名
 
@@ -776,6 +816,7 @@ lambda表达式的形式：参数（小括号括起）、箭头（->）、表达
 
   - 创建不依靠外围类
   - 只能访问外围类的静态数据、方法
+  - 可用public、private、protected修饰
   - **与常规内部类不同 , 静态内部类可以有静态域和方法**
 
   ```java
@@ -873,9 +914,63 @@ OuterClass.InnerClass inner = outer.new InnerClass();//outer是OuterClass实例�
 
 **外围类作用域外通过OuterClass.InnerClass来引用内部类，内部类中通过OuterClass.this来定义外围类的引用**
 
-- **内部类中声明的所有静态域都必须是 final，不能有static方法**（Java 语言规范对这个限制没有做任何解释。也可以允许有静态方法 , 但只能访问外围类的静态域、方法）
+
+
+- **内部类中不能有定义static域、方法**，静态类除外
 
 
 
 内部类是个编译时的概念，一旦编译成功后，它就与外围类属于两个完全不同的类（当然他们之间还是有联系的）。对于一个名为OuterClass的外围类和一个名为InnerClass的内部类，在编译成功后，会出现这样两个class文件：OuterClass.class和OuterClass$InnerClass.class
+
+> 所以内部类用public修饰是没问题的，局部内部类不能用public、private修饰
+
+
+
+### 异常
+
+异常层次结构如图，都继承于Throwable类。Error 类层次结构描述了 Java 运行时系统的内部错误和资源耗尽错误，在设计 Java 程序时 , 需要关注 Exception 层次结构（分为有程序错误导致的RuntimeException，程序本身没有问题 , 但由于像 I / O 错误这类问题导致的IOException）
+
+![1551708631498](assets/1551708631498.png)
+
+派 生 于 Error 类 或 RuntimeException 类的所有异常称为**非受查异常**，其他是**受查异常**
+
+抛出异常：throws...
+
+捕获异常：try...catch...
+
+> finally语句，不管是否有异常被捕获, finally中的代码都被执行，常用来关闭一些资源
+>
+> 也可以捕获多个异常，对应多个catch或者`|`并列
+
+try 语句可以只有 finally 子句, 而没有 catch 子句 。建议解耦合 try /catch 和 try / finally 语句块（不知道有啥用，书上说是代码清晰度更高）
+
+```java
+InputStrean in = ...
+try
+{
+    try
+    {
+    	code that might throw exceptions
+    }finally
+    {
+    	in.close();
+    }
+}
+catch ( IOException e )
+{
+show error message
+}
+```
+
+finally语句中包含return时，要小心其他地方（比如try中）也有return语句返回值就会被覆盖。而且有时finally中也可能抛出异常（java 7后可以用带资源的 try 语句解决，继承自AutoCloseable接口自动关闭）
+
+### 泛型和反射
+
+泛型类、泛型方法类似C++的模版，含有类型参数（`<T,U>`，尖括号括起，T、U表示类型还可以有其他的）。调用时指明具体类型
+
+
+
+限定类型变量
+
+核心卷这里提到如果一个类型T，在方法中会用到t.compare()（t是T实例对象）这就要保证调用时传入的类型参数有compare方法（即实现了Comparable接口），所以要限定`<T extends Comparable>`（虽然Comparable是接口这里还要有extends）。如果是多个限定，用`&`连接，如`T extends Comparable & Serializable`（`,`是分隔多个类型变量）
 
