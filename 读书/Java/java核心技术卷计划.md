@@ -696,7 +696,7 @@ Integer 、 Long 、 Float 、 Double 、 Short 、 Byte 、 Character 、 Void 
 
 > 接口中方法自动public，数据自动public static final化
 >
-> java 8 后可以在接口中定义静态方法
+> java 8 后可以在接口中定义静态方法、默认方法
 >
 > **类只能有一个超类，但可实现多个接口**
 >
@@ -974,3 +974,146 @@ finally语句中包含return时，要小心其他地方（比如try中）也有r
 
 核心卷这里提到如果一个类型T，在方法中会用到t.compare()（t是T实例对象）这就要保证调用时传入的类型参数有compare方法（即实现了Comparable接口），所以要限定`<T extends Comparable>`（虽然Comparable是接口这里还要有extends）。如果是多个限定，用`&`连接，如`T extends Comparable & Serializable`（`,`是分隔多个类型变量）
 
+
+
+### 集合 Collection
+
+以下部分内容参考自：[Collection总览](https://mp.weixin.qq.com/s?__biz=MzI4Njg5MDA5NA==&mid=2247484122&idx=1&sn=c3bd6436b3e661ae15cb9d7154d82b89&chksm=ebd743dbdca0cacdcb272576f4be48c466bd73160a87227314e8fb21d5e4f9156c23902198ab#rd)![img](assets/640.webp)
+
+
+
+Collection是一个接口，继承自Iterable接口。但迭代器功能还是由Iterator接口来完成的（Iterable内部也是用了Iterator），Iterator接口有三个方法：hasNext、next、remove方法
+
+
+
+其他接口的实现如下图：
+
+![img](assets/640-1551860568789.webp)
+
+#### 集合LIst：有序、可重复
+
+定义了新的迭代器接口ListIterator，同样是继承Iterator接口，不过添加了可以获取前驱节点、向前遍历、添加、设置元素的方法
+
+![1551859303006](assets/1551859303006.png)
+
+- **ArrayLIst**：底层是数组，线程不安全
+
+  > 可以使用Collections的方法：`List list = Collections.synchronizedList(new ArrayList(...));` 实现ArrayLIst线程安全（同步）
+  >
+  > **即使不同步也可以通过Collections的工具来实现同步的ArrayLIst**，所以不用Vector
+
+  - 了解初始化
+
+  - 如何动态扩容:grow，默认1.5倍
+
+    - 扩容最后会涉及数组内容复制，调用Arrays.copyOf（本质是System.arraycopy方法）
+
+    ```java
+    public static native void arraycopy(Object src,//原数组
+                                        int  srcPos,//原数组起始位置
+                                        Object dest,//目标数组
+                                        int destPos,//目标数组起始位置
+                                        int length//复制长度
+                                        );
+    //把src从srcPos开始length长的数据复制到dest的destPos位置
+    //线程不安全的，浅拷贝，高效（System.arraycopy>clone>Arrays.copyOf>for循环）
+    ```
+
+  - 是否要扩容:ensureCapacityInternal
+
+  - 扩容多大：ensureExplicitCapacity、calculateCapacity
+
+  - remove(int)和remove(Object)是不同的，前者是删除传入索引处的元素，后者是传入对象，删除ArrayLIst中该对象的第一个匹配项
+
+    - 删除元素不会减少容量
+    - 减少容量可以使用**trimToSize**
+
+  - 可以存null数据
+
+- **LinkedList**：底层是双向链表，线程不安全
+
+  ```java
+  private static class Node<E> {
+          E item;
+          Node<E> next;
+          Node<E> prev;
+  
+          Node(Node<E> prev, E element, Node<E> next) {
+              this.item = element;
+              this.next = next;
+              this.prev = prev;
+          }
+      }
+  transient Node<E> first;//还有头尾指针
+  transient Node<E> last;
+  private void linkFirst(E e){...}//头插法（从头部插入）
+  private void linkLast(E e){...}//尾插法，其中add方法就是用了尾插
+  ```
+
+  - 实现了**Deque接口**，可以像队列、栈一样操作
+  - remove同样有两种操作，不过涉及链表删除，其中有用到了unlink方法来删除链表节点
+
+- **Vector**：过时，底层是数组，线程安全
+
+  - 基本上和ArrayLIst相同，
+  - 不同点：Vector使用了synchronized关键字修饰方法，是线程安全的；其次Vector动态扩容默认2倍（比ArrayLIst更耗内存）
+
+
+
+**查询多用ArrayList，增删多用LinkedList**
+
+#### 集合Set：不可重复
+
+> Set底层其实就是封装了对应的Map
+
+- HashSet：底层是哈希表（元素为链表的数组）和红黑树
+  - 无序、非线程同步、允许插入null
+- TreeSet：底层是红黑树（自平衡的二叉树），保证元素的排序方式
+  - 有序（可实现排序）、非线程同步、允许插入null
+  - 实现NavigableSet接口
+- LinkedHashSet：底层由哈希表和双向链表组成
+  - 迭代有序、非线程同步、允许插入null
+  - 性能比HashSet差一点
+
+HashSet继承层次图：
+
+![640](assets/640-1551878862223.webp)
+
+
+
+HashSet底层是一个HashMap，**操作HashSet元素实际上就是操作HashMap**
+
+```java
+//Constructs a new, empty set; the backing HashMap instance has default initial capacity (16) and load factor (0.75).
+public HashSet() {
+        map = new HashMap<>();
+    }
+```
+
+看源码中备注了初始容量16，装填因子为0.75。装填因子，当散列表中元素数目达到一定量时会发生扩容并再散列（这个一定量就是所谓的装填因子）。装的太慢易造成哈希冲突
+
+
+
+### 并发
+
+进程：资源分配的基本单位
+
+线程：资源调度的基本单位，程序执行单元，也是程序使用cpu的最基本单位
+
+> 因为进程在多处理机下调度、切换、分派时要耗费大量的时间和空间资源，所以引入线程来提高系统的执行效率，有更好的并发性
+>
+> 多线程的存在，不是提高程序的执行速度。其实**是为了提高应用程序的使用率**（抢占CPU的执行权）
+
+#### 多线程实现的两种方式
+
+- 继承Thread，并重写run方法
+- 实现Runnable接口，重写run方法
+
+```
+Thread t = new Thread(A);
+t.start()
+```
+
+
+
+最后都是由start方法来启动线程，然后由jvm去调用该线程的run方法

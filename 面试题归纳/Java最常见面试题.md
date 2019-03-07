@@ -16,23 +16,49 @@
 
 5.java 中的 Math.round(-1.5) 等于多少？
 
+> -1，Math.round(x)  = Math.floor(x+0.5)
+
 6.String 属于基础的数据类型吗？
 
 7.java 中操作字符串都有哪些类？它们之间有什么区别？
 
+> String、StringBuffer、StringBuilder，可变与否、线程安全与否、效率三个角度
+
 8.String str="i"与 String str=new String("i")一样吗？
 
+> 不一样。理解常量池、堆、栈、方法区
+
 9.如何将字符串反转？
+
+> new StringBuffer(str).reverse().toString()
 
 10.String 类的常用方法都有那些？
 
 11.抽象类必须要有抽象方法吗？
 
+> 否
+
 12.普通类和抽象类有哪些区别？
 
 13.抽象类能使用 final 修饰吗？
 
+> 否，final修饰的类不允许被继承
+
 14.接口和抽象类有什么区别？
+
+> 接口是行为抽象，抽象类是类的抽象
+>
+> 类可以实现多接口，但只能继承一个抽象类
+>
+> 类实现接口要实现接口中所有非默认（default）、静态方法，抽象类则不一定
+>
+> > default方法不允许override重写Object类的默认方法，如equals、hashCode等。一旦所有接口的实例都是**Object的子类**，所有接口实例**都已经有对equals/hashCode/toString等方法非默认 实现**。因此，一个在接口上的这些默认方法都是没用的，它也**不会被编译**。
+>
+> 接口中方法默认public、变量默认final，java8后方法可以有默认实现（default关键字），也可以有static方法（必须有方法体），其他方法由实现该接口的类去定义方法体。抽象类中的抽象方法不允许有方法体，可以有非抽象方法（必须有方法体）
+>
+> > 接口的静态方法可以由接口名直接调用，抽象类中同样也可以有静态方法，一样由抽象类名调用
+>
+> 接口中只能定义**初始化了的**final实例域（final默认，可省略），抽象类随便
 
 15.java 中 IO 流分为几种？
 
@@ -41,6 +67,24 @@
 17.Files的常用方法都有哪些？
 
 ## **二、容器**
+
+Java容器可分为两大类：参考：[Java集合总结](https://segmentfault.com/a/1190000014403696#articleHeader14)
+
+- Collection
+  - List
+    - **ArrayList**
+    - LinkedList
+    - Vector(了解，已过时)
+  - Set
+    - **HashSet**
+      - LinkedHashSet
+    - TreeSet
+- Map
+  - **HashMap**
+    - LinkedHashMap
+  - TreeMap
+  - ConcurrentHashMap
+  - Hashtable(了解，，已过时)
 
 18.java 容器都有哪些？
 

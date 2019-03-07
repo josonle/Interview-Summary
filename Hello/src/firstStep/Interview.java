@@ -18,7 +18,8 @@ class B {
   }
 }
 interface C{
-	default void cFun() {System.out.println("default func");}
+	default void cFun() {System.out.println("default func| interface");}
+	static  void ccFun() {System.out.println("static func| interface");}
 	void dFunc();
 }
 public class Interview extends A implements C{
