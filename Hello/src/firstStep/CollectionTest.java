@@ -1,8 +1,11 @@
 package firstStep;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.TreeSet;
 
 public class CollectionTest {
 
@@ -28,6 +31,27 @@ public class CollectionTest {
 		bList.remove(2);
 		bList.remove(2);
 		System.out.println(bList.toString());
+		Collections.reverse(aList);//翻转ArrayList
+		System.out.println(aList);
+		
+		LinkedHashSet<Integer> aHashSet = new LinkedHashSet<Integer>();
+		aHashSet.add(3);
+		aHashSet.add(2);
+		aHashSet.add(3);
+		aHashSet.add(1);
+		aHashSet.add(4);
+//		System.out.println(aHashSet.toString());
+		Iterator<Integer> itor = aHashSet.iterator();
+		while (itor.hasNext()) {
+			System.out.println(itor.next());
+		}
+		TreeSet<Integer> bTreeSet = new TreeSet<Integer>();
+		bTreeSet.add(3);
+		bTreeSet.add(2);
+		bTreeSet.add(3);
+		bTreeSet.add(1);
+		bTreeSet.add(4);
+		System.out.println(bTreeSet.toString());
 	}
 
 }
