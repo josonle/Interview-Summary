@@ -1175,3 +1175,136 @@ t.start()
 
 
 最后都是由start方法来启动线程，然后由jvm去调用该线程的run方法
+
+
+
+无论是继承Thread类还是实习Runnable接口，在创建新线程时只能调用Thread.start方法，而**不是直接调用run方法**，run方法只会启动一个线程中的任务，而不是启动新的线程
+
+Thread新构造一个线程，然后通过start启动该线程，然后会引发调用run方法。该方法将立即返回 ， 并且新线程将并发运行
+
+> 多线程还可以通过创建线程池来调用，也是现在推荐的
+
+#### 终止线程
+- run方法执行到最后一句由return返回，或者捕捉到异常时就会终止。
+- java早期有已被废弃的stop、suspend方法也可以终止线程
+- interrupt方法**来请求终止线程，不能强制线程终止**，应当结合isInterrupted、return来跳出run方法    [使用interrupt、return来终止进程](https://blog.csdn.net/qq_34337272/article/details/79640870#t37)
+  + interrupt方法会置位线程的**中断状态**（boolean标志位）为true，每个线程都会不时地检测该标志位来判断线程是否被中断
+  + **静态**Thread.currentThread 方法获得当前线程，然后调用 isInterrupted 方法检测是否被中断
+    * 静态 interrupted方法也可以判断是否被中断，但不同于isInterrupted的是，会将当前线程的中断状态重置为 false
+> 如果线程被阻塞就无法检测中断状。这是产生InterruptedException异常的地方。当在一个被阻塞的线程（调用 sleep 或wait )上调用interrupt方法时，阻塞调用将会被InterruptedException 异常中断 
+>
+> interrupt方法：向线程发送中断请求，线程的中断状态将被设置为 true 。 如果目前该线程被一个 sleep调用阻塞，那么InterruptedException 异常被抛出
+
+#### 线程六种状态
+新创建、可运行、被阻塞、等待、计时等待、被终止
+可通过getState方法判断当前线程状态
+![](assets/thread.jpg)
+
+- New：新创建，`new Thread()`
+- Runnable：可运行，调用start方法。一个正在运行中的线程仍然处于可运行状态，没运行的线程也可以是可运行状态（等待操作系统分配线程运行的时间）
+- Blocked：被阻塞
+
+#### 并发(Concurrency)和并行(Parallelism)
+并发和并行都可以表示两个或者多个任务一起执行，但是偏重点有些不同。并发偏重于多个任务交替执行，而多个任务之间有可能还是串行的。而并行是真正意义上的“同时执行”。
+多线程在**单核CPU**的话是顺序执行，也就是交替运行（并发）。多核CPU的话，因为每个CPU有自己的运算器，所以在**多核CPU**中可以同时运行（并行）。
+
+> 高并发指标：常用的一些指标有响应时间（Response Time），吞吐量（Throughput），每秒查询率QPS（Query Per Second），并发用户数等
+> 所谓高并发就是同时处理很多请求
+
+#### 同步和异步
+
+同步和异步通常用来形容一次方法调用。同步方法调用一旦开始，调用者必须等到方法调用返回后，才能继续后续的行为。异步方法调用更像一个消息传递，一旦开始，方法调用就会立即返回，调用者可以继续后续的操作。
+> 关于异步目前比较经典以及常用的实现方式就是消息队列：在不使用消息队列服务器的时候，用户的请求数据直接写入数据库，在高并发的情况下数据库压力剧增，使得响应速度变慢。但是在使用消息队列之后，用户的请求数据发送给消息队列之后立即 返回，再由消息队列的消费者进程从消息队列中获取数据，异步写入数据库。由于消息队列服务器处理速度快于数据库（消息队列也比数据库有更好的伸缩性），因此响应速度得到大幅改善。
+
+
+#### 变量共享的问题
+- synchronized 关键字（锁机制）：保证每次只有一个方法可以执行该方法访问该变量
+- AtomicInteger 类（JUC 中的 Atomic 原子类）
+- Java SE 5.0 引入了 ReentrantLock类(可重入锁)设置锁对象来保护代码块。确保任何时刻只有一个线程进入**临界区**。一旦一个线程封锁了锁对象，其他任何线程都无法通过lock语句。当其他线程调用lock时，它们被阻塞，直到第一个线程通过unlock释放锁对象。锁是可重入的，因为线程可以重复地获得已经持有的锁
+```java
+private Lock myLock = new ReentrantLock();
+...
+myLock.lock(); // a ReentrantLock object
+try{//使用锁,就不能使用带资源的 try 语句
+critical section//临界区
+}
+finally{//解锁放在finally中，因为临界区一旦抛出异常也可以关闭锁
+myLock.unlock(); // make sure the lock is unlocked even if an exception is thrown
+}
+```
+volatile 关键字，不保证复合操作的原子性
+
+
+
+syncronized关键字 [参考](https://blog.csdn.net/qq_34337272/article/details/79670775 )
+
+1. 重量级锁
+
+2. 对象锁，多个线程访问**同一个对象**时，哪个线程先执行syncronized修饰的方法就会持有所属对象的锁，则其他线程只能等待
+
+3. 是可重入锁，可重入锁支持父子类继承的环境下
+
+4. 同步不能继承，如果父类的带synchronized关键字的方法，子类要重写该方法且也要同步，就也得加上syncronized
+
+5. 同步方法、同步语句块。syncronized修饰方法的缺点是线程占用耗时，可以用synchronized同步块来解决
+
+6. `syncronized(this){...}`同样是对象锁，不在synchronized代码块中就异步执行，在synchronized代码块中就是同步执行
+
+7. synchronized关键字加到static静态方法和synchronized(class)代码块上都是是**给Class类上锁**，而synchronized关键字加到非static静态方法上是**给对象上锁**
+
+   ```java
+   public class Service {
+   
+       public static void printA() {
+           synchronized (Service.class) {
+               try {
+                   System.out.println(
+                           "线程名称为：" + Thread.currentThread().getName() + "在" + System.currentTimeMillis() + "进入printA");
+                   Thread.sleep(3000);
+                   System.out.println(
+                           "线程名称为：" + Thread.currentThread().getName() + "在" + System.currentTimeMillis() + "离开printA");
+               } catch (InterruptedException e) {
+                   e.printStackTrace();
+               }
+           }
+       }
+   
+       synchronized public static void printB() {
+           System.out.println("线程名称为：" + Thread.currentThread().getName() + "在" + System.currentTimeMillis() + "进入printB");
+           System.out.println("线程名称为：" + Thread.currentThread().getName() + "在" + System.currentTimeMillis() + "离开printB");
+       }
+   
+       synchronized public void printC() {
+           System.out.println("线程名称为：" + Thread.currentThread().getName() + "在" + System.currentTimeMillis() + "进入printC");
+           System.out.println("线程名称为：" + Thread.currentThread().getName() + "在" + System.currentTimeMillis() + "离开printC");
+       }
+   }
+   ```
+
+   
+
+#### 线程属性
+线程优先级 、 守护线程 、 线程组以及处理未捕获异常的处理器
+- 线程优先级：表示线程重要性，线程处于就绪状态时系统会根据优先级来判断哪个线程进入运行状态（优先级低也是可以运行的）
+  + 线程优先级具有**继承特性**比如A线程启动B线程，则B线程的优先级和A是一样的。
+  + 线程优先级具有**随机性**也就是说线程优先级高的不一定每一次都先执行完。
+  + 优先级1到10，默认优先级是5
+  + getPriority获取优先级，setPriority设置优先级
+- 用户线程和守护线程
+  + 用户线程：运行在前台，执行具体的任务，如程序的主线程、连接网络的子线程等都是用户线程
+  + 守护线程：运行在后台，**为其他前台线程服务**.也可以说守护线程是JVM中非守护线程的 “佣人”。
+> 特点：一旦所有用户线程都结束运行，守护线程会随JVM一起结束工作。不是所有的应用都可以分配给Daemon线程来进行服务，比如读写操作或者计算逻辑。因为在Daemon线程还没来的及进行操作时，虚拟机可能已经退出了
+>
+> 应用：数据库连接池中的检测线程，JVM虚拟机启动后的检测线程
+> jre判断线程是否结束的标志是所有用户线程结束，和守护线程无关
+> 最常见的守护线程：垃圾回收线程
+
+- 线程组：一个可以统一管理的线程集合
+#### 线程方法
+除了上面所提及的几个，还有：
+- join方法：主线程等待子线程执行完成才结束，也就是在子线程调用了join()方法后面的代码，只有等到子线程结束了才能执行
+- yield方法：放弃当前的CPU资源，将它让给其他的线程去占用CPU时间。注意：放弃的时间不确定，可能一会就会重新获得CPU时间片
+- isDaemon方法：判断是否是守护进程
+- setDaemon(boolean on)：设置进程为守护进程
+  + 必须在调用start方法前设置，否则抛出IllegalThreadStateException异常
+  + 守护线程中新产生的线程也是守护线程（继承特性）
