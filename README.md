@@ -74,4 +74,10 @@
 - 撰写简历（用MarkDown写的），本以为没什么可写，实际上手也写了两页纸
 - 总结回顾下java集合及常考知识点
 - 核心卷 java并发、多线程
+
+### 3-11日
+
+- java多线程Lock接口和实现类
+  - 多线程内容看的是csdn上的一个[系列博客](https://blog.csdn.net/qq_34337272/article/details/79714196)
+- 牛客刷剑指Offer，排序
 - 

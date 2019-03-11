@@ -1281,9 +1281,62 @@ syncronized关键字 [参考](https://blog.csdn.net/qq_34337272/article/details/
    }
    ```
 
-   
+8. syncronized和wait()、notify/notifyAll()方法结合实现等待/通知机制
+
+   1. 执行完notify()方法所在的synchronized代码块后才释放锁
+
+![1552270512675](assets/1552270512675.png)
+
+Lock接口实现类：**ReentrantLock（排他锁）**
+
+同一时刻只允许一个线程访问，这样做虽然虽然保证了实例变量的线程安全性，但效率非常低下
+
+
+
+ReadWriteLock接口的实现类：**ReentrantReadWriteLock（读写锁）**
+
+解决ReentrantLock效率低的问题
+
+> 读写锁维护了两个锁，一个是**读操作相关**的锁也成为**共享锁**，一个是**写操作相关**的锁 也称为**排他锁**。通过分离读锁和写锁，其并发性比一般排他锁有了很大提升。
+>
+> **多个读锁之间不互斥，读锁与写锁互斥，写锁与写锁互斥**（只要出现写操作的过程就是互斥的）
+
+![1552274222807](assets/1552274222807.png)
+
+```java
+private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+lock.readLock().lock();//读锁，释放锁是unlock
+lock.writeLock().lock();//写锁，释放锁是unlock
+```
+
+> 记住：只要出现写锁就会发升互斥
+
+**Condition接口简介**
+
+synchronized关键字与wait()和notify/notifyAll()方法相结合可以实现等待/通知机制，ReentrantLock类当然也可以实现，但是需要借助于Condition接口与newCondition() 方法。Condition是JDK1.5之后才有的，它具有很好的灵活性，比如可以实现多路通知功能也就是在一个Lock对象中可以创建多个Condition实例（即对象监视器），线程对象可以注册在指定的Condition中，从而可以有选择性的进行线程通知，在调度线程上更加灵活。在使用notify/notifyAll()方法进行通知时，被通知的线程是有JVM选择的，使用ReentrantLock类结合Condition实例可以实现“选择性通知”，这个功能非常重要，而且是Condition接口默认提供的。而**synchronized关键字就相当于整个Lock对象中只有一个Condition实例**，所有的线程都注册在它一个身上。如果执行**notifyAll()方法的话就会通知所有处于等待状态的线程**这样会造成很大的效率问题，而**Condition实例的signalAll()方法 只会唤醒注册在该Condition实例中的所有等待线程**
+
+![1552270979760](assets/1552270979760.png)
+
+> 同syncronized中等待通知机制一样，Condition也是必须执行完signal()所在的try语句块之后才释放锁，condition.await()后的语句才能被执行
+
+```java
+//创建锁和condition实例
+private Lock lock = new ReentranLock();
+public Condition condition = lock.newCondition();
+```
+
+
+
+**公平锁** 和 **非公平锁**
+
+公平锁表示线程**获取锁的顺序**是按照线程加锁的顺序来分配的，即先来先得的**FIFO先进先出顺序**。而非公平锁就是一种获取锁的抢占机制，是**随机获取**锁的，和公平锁不一样的就是先来的不一定先的到锁，这样可能造成某些线程一直拿不到锁，结果也就是不公平的了
+
+> 默认情况下ReentranLock类使用的是非公平锁，new ReentranLock(true)是创建公平锁
+
+
 
 #### 线程属性
+
 线程优先级 、 守护线程 、 线程组以及处理未捕获异常的处理器
 - 线程优先级：表示线程重要性，线程处于就绪状态时系统会根据优先级来判断哪个线程进入运行状态（优先级低也是可以运行的）
   + 线程优先级具有**继承特性**比如A线程启动B线程，则B线程的优先级和A是一样的。
@@ -1308,3 +1361,16 @@ syncronized关键字 [参考](https://blog.csdn.net/qq_34337272/article/details/
 - setDaemon(boolean on)：设置进程为守护进程
   + 必须在调用start方法前设置，否则抛出IllegalThreadStateException异常
   + 守护线程中新产生的线程也是守护线程（继承特性）
+
+
+
+#### 死锁避免
+
+所谓死锁，要么是两个及以上的进程间在竞争资源或彼此通信造成阻塞，要么是两个线程同时等待对方释放锁造成阻塞
+
+见《Java并发编程的艺术》
+
+- 避免一个线程同时获得多个锁
+- 避免一个线程在锁内同时占用多个资源，尽量保证每个锁只占用一个资源
+- 尝试使用定时锁，使用`lock.tryLock(timeout)`来替代使用内部锁机制
+- 对于数据库锁，加锁和解锁必须在一个数据库连接里，否则会出现解锁失败的情况
