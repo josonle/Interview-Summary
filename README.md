@@ -80,4 +80,18 @@
 - java多线程Lock接口和实现类
   - 多线程内容看的是csdn上的一个[系列博客](https://blog.csdn.net/qq_34337272/article/details/79714196)
 - 牛客刷剑指Offer，排序
-- 
+
+### 3-12日
+
+- 总结了下Hive，画了个脑图
+- 回顾了下计网的几个知识点——http/https、tcp/udp
+  - [http三次握手四次挥手](https://www.cnblogs.com/nevermorewang/p/8906833.html)
+  - [HTTPS四次握手过程](http://www.cnblogs.com/lovesong/p/5186200.html) 【强推】
+  - [https在每次传输过程中都要先通过ssl握手传输秘钥吗？](https://www.zhihu.com/question/67740663)
+  - [SSL和TLS的区别](https://kb.cnblogs.com/page/197396/)
+  - [SSL/TSL是那一层的协议？](https://www.jianshu.com/p/5ee027c51af0)
+  - 《TCP—UDP理解》原来学习计网时不知道在哪找到的一个大神写的pdf，足够了
+- 回顾SparkSQL的DataFrame、DataSet
+- 刷题剑指offer的数组模快
+- 听了腾讯的宣讲会，感觉现在功力还不行。反正是提前批，等四月中旬是正式招，一个月的样子足以巩固了
+- 不过昨天投了七牛云的大数据开发实习岗位，等15号第一批笔试吧
