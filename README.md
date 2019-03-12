@@ -83,7 +83,7 @@
 
 ### 3-12日
 
-- 总结了下Hive，画了个脑图
+- 总结了下Hive，画了个[脑图](http://naotu.baidu.com/file/cdcd76d878f210e43a91b24d4254abed?token=c3839e44e93c9a5e)
 - 回顾了下计网的几个知识点——http/https、tcp/udp
   - [http三次握手四次挥手](https://www.cnblogs.com/nevermorewang/p/8906833.html)
   - [HTTPS四次握手过程](http://www.cnblogs.com/lovesong/p/5186200.html) 【强推】
