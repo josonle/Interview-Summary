@@ -461,7 +461,7 @@ class Employee
 总结下super和this
 
 - this：1、用来调用类中其他构造器，2、调用类中方法或数据域
-- super：1、用来调用超类构造器，2、用来调用超类方法
+- super：1、用来调用超类构造器，2、用来调用超类方法或数据域
 
 理解重载和多态
 
@@ -558,7 +558,7 @@ if ( staff[1] instanceof Manager)//判断staff[1]能否引用Manager对象，前
 
 - **抽象类不一定有抽象方法，但抽象方法一定属于抽象类。抽象类中的非抽象方法一定要给出实现**
 
-- 抽象类可以有构造器、静态方法。构造器能被子类继承并完成初始化，但不会创建抽象类的实例对象。静态方法的好处是不实例化就可由子类类名直接调用
+- 抽象类可以有构造器、静态方法。构造器能被子类继承并完成初始化，但不会创建抽象类的实例对象。静态方法的好处是不实例化就可由（子类）类名直接调用
 
   - 抽象类直接使用省去了实例化过程
   - 抽象类中的静态方法是存在内存中的，用的时候直接去内存中去取
@@ -660,7 +660,7 @@ public int hashCode(){
 - `void trimToSize()`：将数组列表的存储容量削减到当前尺寸
 - set/get/remove：替换/获取/删除数组列表中的元素
 
-### 对象包装器和自动装箱
+### 对象包装器和自动装箱、拆箱
 
 Integer 、 Long 、 Float 、 Double 、 Short 、 Byte 、 Character 、 Void 和Boolean ( 前6 个类派生于公共的超类 Number ) 。**对象包装器类是不可变的**, 即一旦构造了包装器, 就不允许更改包装在其中的值 。同时, **对象包装器类还是 final** , 即不允许被继承
 
@@ -676,7 +676,7 @@ Integer 、 Long 、 Float 、 Double 、 Short 、 Byte 、 Character 、 Void 
 
 
 
-包装器类引用可以为 nul
+包装器类引用可以为 null
 
 
 
@@ -753,7 +753,7 @@ class aA implements A<aA>{
           System.out.println("...");
       }
   }
-  //实际编程时，最好把接口单一文件。public类是程序入口，所以不能再在该文件下写一个public的接口/类等
+  //实际编程时，最好把接口单一文件。public类是程序入口，所以不能再在该文件下写一个public的接口/类等（内部类可以是public的）
   ```
 
   感觉没啥用，实现类可以选择覆盖该方法
@@ -977,6 +977,8 @@ finally语句中包含return时，要小心其他地方（比如try中）也有r
 
 
 ### 集合 Collection
+
+![Collection](assets/Collection.jpg)
 
 以下部分内容参考自：[Collection总览](https://mp.weixin.qq.com/s?__biz=MzI4Njg5MDA5NA==&mid=2247484122&idx=1&sn=c3bd6436b3e661ae15cb9d7154d82b89&chksm=ebd743dbdca0cacdcb272576f4be48c466bd73160a87227314e8fb21d5e4f9156c23902198ab#rd)![img](assets/640.webp)
 
