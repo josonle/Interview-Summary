@@ -14,6 +14,9 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.TreeSet;
 
+abstract class ClassA{
+	
+}
 public class Test {
 
 	public static void main(String[] args) {

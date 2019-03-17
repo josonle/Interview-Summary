@@ -528,7 +528,7 @@ if ( staff[1] instanceof Manager)//判断staff[1]能否引用Manager对象，前
 - abstract关键字
 
   ```	java
-  public abstract Persion{
+  public abstract class Persion{
   	...
       public abstract void print();
       void print_(){
