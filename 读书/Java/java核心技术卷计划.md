@@ -1054,6 +1054,7 @@ Collection是一个接口，继承自Iterable接口。但迭代器功能还是�
 
   - 实现了**Deque接口**，可以像队列、栈一样操作
   - remove同样有两种操作，不过涉及链表删除，其中有用到了unlink方法来删除链表节点
+  - 双向链表的缘故，查找index索引时，若index < 双向链表长度的1/2，则从前向后查找; 否则，从后向前查找
 
 - **Vector**：过时，底层是数组，线程安全
 
@@ -1071,7 +1072,6 @@ Array转List，List转ArrayList，List转Array
 ```java
 //arrayList是ArrayList<String>
 String[] a = arrayList.toArray(new String[arrayList.size()]);//或者直接toArray
-
 List<String> list = Arrays.toList(a);
 ArrayList<String> aList = new ArrayList();
 aList.addAll(list);
@@ -1086,7 +1086,9 @@ aList.addAll(list);
 - HashSet：底层是哈希表（元素为链表的数组）和红黑树
   - 无序、非线程同步、允许插入null
 - TreeSet：底层是红黑树（自平衡的二叉树），保证元素的排序方式
-  - 有序（可实现排序）、非线程同步、允许插入null
+  - 有序（可实现排序）、非线程同步、不允许插入null
+    - 理论上是不能插入null的，因为要排序，null不能直接比较。除非是传入自定义Comparator比较器参数
+    - 参考：[Can't I put a null in a SortedSet?](https://stackoverflow.com/questions/11608301/cant-i-put-a-null-in-a-sortedset)
   - 实现NavigableSet接口
 - LinkedHashSet：底层由哈希表和双向链表组成
   - 迭代有序、非线程同步、允许插入null
