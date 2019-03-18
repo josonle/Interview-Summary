@@ -1,9 +1,11 @@
 package Test317;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Set;
 import java.util.TreeMap;
@@ -14,13 +16,32 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.TreeSet;
 
-abstract class ClassA{
-	
+abstract class ClassA {
+
 }
+
 public class Test {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		int[] array = {1,2,3,4,5,6};
+		LinkedList<Integer> link = new LinkedList();
+		int count = 0;
+        for(int i:array){
+            if(i%2==1){
+                link.add(count,i);
+                count++;
+            }else {
+            	link.offerLast(i);
+			}
+        }
+        for (Integer i : link) {
+			System.out.println(i);
+		}
+        for(int i=0;i<array.length;i++){
+            array[i] = link.pollFirst();
+        }
+        System.out.println(Arrays.toString(array));
 //		LinkedList<Integer> link = new LinkedList<Integer>();
 //		link.offer(null);
 //		link.offerFirst(1);
@@ -32,7 +53,7 @@ public class Test {
 //		vec.add(null);
 //		vec.add(1);
 //		System.err.println(vec.indexOf(null));
-		
+
 //		TreeSet<Integer> treeSet1 = new TreeSet<Integer>();
 //		treeSet.add(5);
 //		treeSet.add(3);
@@ -88,12 +109,26 @@ public class Test {
 //		TreeMap<String, Integer> treeMap = new TreeMap<String, Integer>();
 ////		treeMap.put(null, 0);//理论不允许插入null
 //		System.out.println(treeMap.descendingKeySet());
-		
-		HashMap<Integer, String> hMap = new HashMap<Integer, String>();
-		hMap.put(null, null);
-		System.out.println(hMap.get(null));
-		Hashtable<Integer, String> hTable = new Hashtable<Integer, String>();
-		hTable.put(1, "1");
-		System.out.println(hTable.get(1));
+
+//		HashMap<Integer, String> hMap = new HashMap<Integer, String>();
+//		for(Map.Entry<Integer, String> item:hMap.entrySet()) {
+//		}
+//		hMap.put(null, null);
+//		System.out.println(hMap.put(256, "2"));
+//		System.out.println(hMap.put(256, "3"));
+//		System.out.println(hMap.get(null));
+//		System.out.println(hMap.get(256));
+//		System.out.println(hMap.size());
+//		// 遍历map
+//		Iterator<Map.Entry<Integer, String>> it = hMap.entrySet().iterator();
+//		while (it.hasNext()) {
+//			Map.Entry<Integer, String> itemEntry = it.next();
+//			Integer kInteger = itemEntry.getKey();
+//			String vString = itemEntry.getValue();
+//			System.out.println(kInteger + "-->" + vString);
+//		}
+//		Hashtable<Integer, String> hTable = new Hashtable<Integer, String>();
+//		hTable.put(1, "1");
+//		System.out.println(hTable.get(1));
 	}
 }
