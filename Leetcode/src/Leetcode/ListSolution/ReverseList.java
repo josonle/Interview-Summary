@@ -1,5 +1,9 @@
 package Leetcode.ListSolution;
 
+/**
+ * @author josonlee
+ * @title 翻转链表
+ */
 public class ReverseList {
 
 	public static void main(String[] args) {
