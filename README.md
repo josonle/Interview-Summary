@@ -127,3 +127,14 @@
 - 操作系统进程、线程
 - mysql索引B+树
 - 看了几个linux命令
+
+### 3-20日
+
+干了这些
+
+![1553170912931](assets/1553170912931.png)
+
+### 3-21日
+
+总结了下mysql的存储引擎区别和特点，索引分类和使用、优化等等，[——>见这里](https://github.com/josonle/Interview-Preparation/tree/master/%E8%84%91%E5%9B%BE)
+
