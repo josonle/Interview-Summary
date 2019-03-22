@@ -235,5 +235,10 @@ public class BSTree<T extends Comparable<T>> {
 		bsTree.noRecurPreOrder(bsTree.getRootNode());
 		System.out.println("\n中序遍历...");
 		bsTree.inOrder(bsTree.getRootNode());
+		System.out.println("\n非递归中序遍历...");
+		bsTree.noRecurInOrder(bsTree.getRootNode());
+		System.out.println("\n递归后序遍历...");
+		bsTree.postOrder(bsTree.getRootNode());
+		
 	}
 }
