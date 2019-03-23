@@ -209,15 +209,33 @@ public class BSTree<T extends Comparable<T>> {
 			while(curNode.left!=null)
 				curNode = curNode.left;
 			//交换值，删除左叶子节点
-			tmNode.val = curNode.parent.val;
-			curNode.parent.left = null;
-		}else {//同理找寻左子树的最大值
+			tmNode.val = curNode.val;
+			if(curNode==tmNode.right) {//最大值刚好是tmNode.left
+				tmNode.right = curNode.right;
+				return true;
+			}
+			if(curNode.right!=null) {//保证cur.right节点不会被删
+				curNode.parent.left = curNode.right;
+				curNode.right.parent = curNode.parent;
+			}else {
+				curNode.parent.left = null;
+			}
+		}else {//左子树非空，找寻左子树的最大值替换
 			curNode = tmNode.left;
 			while(curNode.right!=null)
 				curNode = curNode.right;
 			//交换值，删除右叶子节点
-			tmNode.val = curNode.parent.val;
-			curNode.parent.right = null;
+			tmNode.val = curNode.val;
+			if(curNode==tmNode.left) {//最大值刚好是tmNode.left
+				tmNode.left = curNode.left;
+				return true;
+			}
+			if(curNode.left!=null) {//保证cur.left节点不会被删
+				curNode.parent.right = curNode.left;
+				curNode.left.parent = curNode.parent;
+			}else {
+				curNode.parent.right = null;
+			}
 		}
 		return true;
 	}
@@ -239,6 +257,26 @@ public class BSTree<T extends Comparable<T>> {
 		bsTree.noRecurInOrder(bsTree.getRootNode());
 		System.out.println("\n递归后序遍历...");
 		bsTree.postOrder(bsTree.getRootNode());
-		
+		if (bsTree.remove(4)) {
+			System.out.println("5 删除OK");
+			bsTree.breadthTravel();
+		}
+		int[] arr1 = {2,8,6,5,9,7,3,10};
+		BSTree<Integer> bstTest = new BSTree<Integer>();
+		for (int i : arr1) {
+			bstTest.insert(i);
+		}
+		bstTest.breadthTravel();//2-8-6-9-5-7-3-
+		System.out.println("\n");
+		if (bstTest.remove(9)) {
+			System.out.println("删除 OK");
+			bstTest.breadthTravel();
+			System.out.println("\n前序遍历...");//4-2-1-3-6-5-7-
+			bstTest.preOrder(bstTest.getRootNode());
+		}
+		bstTest.insert(9);
+		System.out.println("\n********");
+		System.out.println(bstTest.search(10).left.val);
+		System.out.println("Max val is "+bstTest.findMaxMinVal(true));
 	}
 }

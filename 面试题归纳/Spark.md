@@ -53,6 +53,22 @@ Spark的Master和Worker通过akka的actor方式进行通信，会产生定时的
 
 http://www.cnblogs.com/jxhd1/p/6528540.html
 
+### MapReduce 和 Spark中Shuffle有何异同？
+
+![img](assets/b5a8d3294a7c99f065896fee00f910e4_hd.jpg)
+
+1、MapReduce在Map阶段完成之后数据会被写入到内存中的一个环形缓冲区（后续的分区/分组/排序在这里完成）；Spark的Map阶段完成之后直接输出到磁盘。
+2、受第一步的影响，MapReduce输出的数据是有序的（针对单个Map数据来说）；Spark的数据是无序的（可以使用RDD算子达到排序的效果）。
+3、MapReduce缓冲区的数据处理完之后会spill到磁盘形成一个文件，文件数量达到阈值之后将会进行merge操作，将多个小文件合并为一个大文件；Spark没有merge过程，一个Map中如果有对应多个Reduce的数据，则直接写多个磁盘文件。
+4、MapReduce全部通过网络来获得数据；对于本地数据Spark可以直接读取
+5、就是上图剩下的步骤。。。
+
+
+
+参考：https://www.zhihu.com/question/27643595/answer/125494852
+
+
+
 ### join操作该如何优化？
 
 join分为两类：map-side join（Map端join）、reduce-side join（Reduce端join）
@@ -130,3 +146,11 @@ C.注册 application D.直接 ALIVE
 通常读取数据PROCESS_LOCAL>NODE_LOCAL>ANY，尽量使数据以PROCESS_LOCAL或NODE_LOCAL方式读取
 
  	 
+
+### 尽量少用groupByKey
+
+少使用groupByKey，而选择reduceByKey。
+
+reduceByKey适合大数据量，它会预先在本地机器上通过reduceByKey中的lambda函数参数对相同的key做reduce计算，然后在对不同分区上相同的key再次调用lambda函数做reduce计算。
+
+而groupByKey只会将所有k-v对移动，一来网络数据传输成本加大了，二来为了确定k-v对移动到那台机器上去，会对key调用分区算法，当移动的数据量大于单台执行机器内存总量时 Spark 会把数据保存到磁盘上。 不过在保存时每次会处理一个 key 的数据，所以当单个 key 的键值对超过内存容量会存在内存溢出的异常

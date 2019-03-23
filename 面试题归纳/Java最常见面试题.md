@@ -130,6 +130,11 @@ Java容器可分为两大类：参考：[Java集合总结](https://segmentfault.
 
 38.创建线程有哪几种方式？
 
+> 1. 继承Thread类，实现run()方法
+> 2. 实现Runnable接口的run()方法
+> 3. 实现callable接口的call()方法，多和Future、FutureTask配合使用
+> 4. 构造线程池
+
 39.说一下 runnable 和 callable 有什么区别？
 
 40.线程有哪些状态？
