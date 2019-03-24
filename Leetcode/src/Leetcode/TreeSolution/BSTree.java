@@ -239,37 +239,73 @@ public class BSTree<T extends Comparable<T>> {
 		}
 		return true;
 	}
-	
+	 /**
+	  * S型打印二叉树
+	  * 两个栈，stack[0]保存奇数层，stack[1]保存偶数层
+	  */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void printSBST() {
+		if(root==null)
+			return;
+
+		Stack<TNode<T>> st1 = new Stack<BSTree<T>.TNode<T>>();//保存奇数层元素
+		Stack<TNode<T>> st2 = new Stack<BSTree<T>.TNode<T>>();//保存偶数层元素
+		Stack[] stacks = {st1,st2};
+		int cur = 0, next = 1;
+		
+		stacks[cur].push(root);
+		while(!stacks[0].isEmpty()||!stacks[1].isEmpty()) {
+			TNode<T> tmpNode = (TNode<T>)stacks[cur].pop();
+			System.out.print(tmpNode.val+"-");
+			if(cur==0) {//奇数层，先压右再压左
+				if(tmpNode.right!=null)
+					stacks[next].push(tmpNode.right);
+				if(tmpNode.left!=null)
+					stacks[next].push(tmpNode.left);
+			}else {
+				if(tmpNode.left!=null)
+					stacks[next].push(tmpNode.left);
+				if(tmpNode.right!=null)
+					stacks[next].push(tmpNode.right);
+			}
+			if(stacks[cur].isEmpty()) {//一层节点遍历完了，比如cur=0完了，切换到cur=1
+				cur = 1-cur;
+				next = 1-next;
+			}
+		}
+	}
 	public static void main(String[] args) {
-		int[] arr = {4,2,6,5,7,3,1};
-		BSTree<Integer> bsTree = new BSTree<Integer>();
-		for (int i : arr) {
-			bsTree.insert(i);
-		}
-		bsTree.breadthTravel();//4-2-6-1-3-5-7-
-		System.out.println("\n前序遍历...");//4-2-1-3-6-5-7-
-		bsTree.preOrder(bsTree.getRootNode());
-		System.out.println("\n非递归前序遍历...");
-		bsTree.noRecurPreOrder(bsTree.getRootNode());
-		System.out.println("\n中序遍历...");
-		bsTree.inOrder(bsTree.getRootNode());
-		System.out.println("\n非递归中序遍历...");
-		bsTree.noRecurInOrder(bsTree.getRootNode());
-		System.out.println("\n递归后序遍历...");
-		bsTree.postOrder(bsTree.getRootNode());
-		if (bsTree.remove(4)) {
-			System.out.println("5 删除OK");
-			bsTree.breadthTravel();
-		}
+//		int[] arr = {4,2,6,5,7,3,1};
+//		BSTree<Integer> bsTree = new BSTree<Integer>();
+//		for (int i : arr) {
+//			bsTree.insert(i);
+//		}
+//		bsTree.breadthTravel();//4-2-6-1-3-5-7-
+//		System.out.println("\n前序遍历...");//4-2-1-3-6-5-7-
+//		bsTree.preOrder(bsTree.getRootNode());
+//		System.out.println("\n非递归前序遍历...");
+//		bsTree.noRecurPreOrder(bsTree.getRootNode());
+//		System.out.println("\n中序遍历...");
+//		bsTree.inOrder(bsTree.getRootNode());
+//		System.out.println("\n非递归中序遍历...");
+//		bsTree.noRecurInOrder(bsTree.getRootNode());
+//		System.out.println("\n递归后序遍历...");
+//		bsTree.postOrder(bsTree.getRootNode());
+//		if (bsTree.remove(4)) {
+//			System.out.println("5 删除OK");
+//			bsTree.breadthTravel();
+//		}
 		int[] arr1 = {2,8,6,5,9,7,3,10};
 		BSTree<Integer> bstTest = new BSTree<Integer>();
 		for (int i : arr1) {
 			bstTest.insert(i);
 		}
-		bstTest.breadthTravel();//2-8-6-9-5-7-3-
-		System.out.println("\n");
+		System.out.println("\n层次遍历");
+		bstTest.breadthTravel();//2-8-6-9-5-7-10-3-
+		System.out.println("\nS型打印");
+		bstTest.printSBST();//2-8-9-6-5-7-10-3-
 		if (bstTest.remove(9)) {
-			System.out.println("删除 OK");
+			System.out.println("\n删除 OK");
 			bstTest.breadthTravel();
 			System.out.println("\n前序遍历...");//4-2-1-3-6-5-7-
 			bstTest.preOrder(bstTest.getRootNode());

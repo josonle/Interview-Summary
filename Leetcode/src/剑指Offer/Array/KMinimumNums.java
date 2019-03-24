@@ -9,7 +9,7 @@ import java.util.Arrays;
  * 例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。
  * 
  * 
- * 直接用PriorityQueue构建最小堆，限制容量为k，插入即可
+ * 直接用PriorityQueue构建最大堆，限制容量为k，插入即可，O(nlogk)
  */
 public class KMinimumNums {
 

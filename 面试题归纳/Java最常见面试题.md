@@ -137,6 +137,17 @@ Java容器可分为两大类：参考：[Java集合总结](https://segmentfault.
 
 39.说一下 runnable 和 callable 有什么区别？
 
+> 相同：这两都可用来创建线程，都是接口，都用Thread.start()来启动线程
+>
+> 相异：Runnable无返回值，Callable有返回值（可调用FutureTask.get()得到）。其次Callable中的call()方法会抛出异常，Runnable的run()方法异常只能在内部消化，不能往上继续抛
+>
+> ```java
+> //CallableDemo是实现callable接口的类
+> CallableDemo call = new CallableDemo();
+> FutureTask<Integer> ft = new FutureTask<Integer>(call);
+> new Thread(ft).start();
+> ```
+
 40.线程有哪些状态？
 
 41.sleep() 和 wait() 有什么区别？

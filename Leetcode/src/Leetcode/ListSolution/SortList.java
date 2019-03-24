@@ -43,7 +43,6 @@ public class SortList {
             slow = slow.next;
             fast = fast.next.next;
         }
-		
 //		不能是下面这样的，想想两个节点的情况，tmp永远指向第二个节点
 //        ListNode tmp = slow.next;
 //        slow.next = null;
