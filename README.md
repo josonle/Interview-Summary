@@ -149,3 +149,7 @@
 
 - 总结下并发synchronized、ReentrantLock、线程池相关问题
 - 《Spark内核设计的艺术》
+
+### 3-25日
+
+- 内推了度小满金融的java岗，投了360数据开发岗（[笔试4月3号](http://chrcmp.chinahr.com/views/2019-qihu360/introduction_4.html)）
