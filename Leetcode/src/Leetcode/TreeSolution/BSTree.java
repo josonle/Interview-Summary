@@ -104,6 +104,35 @@ public class BSTree<T extends Comparable<T>> {
 		}
 	}
 	
+	public void convertToLinkedlist(TNode<T> node) {
+		if(node==null)
+			return ;
+		TNode<T> head= new TNode(-1, null, null, null);
+		TNode<T> pre = head;
+		Stack<TNode<T>> treeStack = new Stack<BSTree<T>.TNode<T>>();
+		TNode<T> tmpNode = node;
+		while(tmpNode!=null||!treeStack.isEmpty()) {
+			while(tmpNode!=null) {
+				treeStack.push(tmpNode);
+				tmpNode = tmpNode.left;
+			}
+			tmpNode = treeStack.pop();
+			pre.right = tmpNode;
+			tmpNode.left = pre;
+			tmpNode = tmpNode.right;
+			pre = pre.right;
+		}
+		//双向打印，看是否是双链表
+		head = head.right;
+		while(head!=null) {
+			System.out.println(head.val);
+			head = head.right;
+		}
+		while(pre!=null) {
+			System.out.println(pre.val);
+			pre = pre.left;
+		}
+	}
 	public void noRecurPostOrder(TNode<T> node) {
 		
 	}
@@ -300,19 +329,20 @@ public class BSTree<T extends Comparable<T>> {
 		for (int i : arr1) {
 			bstTest.insert(i);
 		}
-		System.out.println("\n层次遍历");
-		bstTest.breadthTravel();//2-8-6-9-5-7-10-3-
-		System.out.println("\nS型打印");
-		bstTest.printSBST();//2-8-9-6-5-7-10-3-
-		if (bstTest.remove(9)) {
-			System.out.println("\n删除 OK");
-			bstTest.breadthTravel();
-			System.out.println("\n前序遍历...");//4-2-1-3-6-5-7-
-			bstTest.preOrder(bstTest.getRootNode());
-		}
-		bstTest.insert(9);
-		System.out.println("\n********");
-		System.out.println(bstTest.search(10).left.val);
-		System.out.println("Max val is "+bstTest.findMaxMinVal(true));
+//		System.out.println("\n层次遍历");
+//		bstTest.breadthTravel();//2-8-6-9-5-7-10-3-
+//		System.out.println("\nS型打印");
+//		bstTest.printSBST();//2-8-9-6-5-7-10-3-
+//		if (bstTest.remove(9)) {
+//			System.out.println("\n删除 OK");
+//			bstTest.breadthTravel();
+//			System.out.println("\n前序遍历...");//4-2-1-3-6-5-7-
+//			bstTest.preOrder(bstTest.getRootNode());
+//		}
+//		bstTest.insert(9);
+//		System.out.println("\n********");
+//		System.out.println(bstTest.search(10).left.val);
+//		System.out.println("Max val is "+bstTest.findMaxMinVal(true));
+		bstTest.convertToLinkedlist(bstTest.getRootNode());
 	}
 }

@@ -182,6 +182,19 @@ Java容器可分为两大类：参考：[Java集合总结](https://segmentfault.
 
 56.说一下 atomic 的原理？
 
+
+
+**补充：**
+
+- wait()方法**会释放**CPU执行权 和 占有的锁。
+- sleep(long)方法仅释放CPU使用权，**锁仍然占用**；线程被放入超时等待队列，与yield相比，它会使线程较长时间得不到运行。
+- yield()方法仅释放CPU执行权，**锁仍然占用**，线程会被放入就绪队列，会在短时间内再次执行。
+- wait和notify必须配套使用，即**必须使用同一把锁调用**；
+- wait和notify**必须放在一个同步块中**
+- **调用**wait和notify**的对象必须是他们所处同步块的锁对象**。（不然报错IllegalMonitorStateException）
+
+> 转自：https://www.zhihu.com/question/27654579/answer/252912242 
+
 ## **四、反射**
 
 57.什么是反射？
