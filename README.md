@@ -205,3 +205,36 @@
   - JVM类加载机制、GC垃圾回收算法——CMS之类的——好好看一下
   - JUC下几个类好好看一下
   - 好好回顾下HDFS架构、Yarn架构、Hive、Spark Core等，之前写的MR项目、Spark项目
+
+### 3-29日
+
+- 着重了解了下线程池原理，几个参数如何设置
+
+  - [ThreadPoolExecutor策略配置以及应用场景 - ChanningBJ  ](https://segmentfault.com/a/1190000008394155)
+  - [更好的使用 JAVA 线程池 - 掘金 ](https://juejin.im/entry/5902e1ddda2f60005df064f5)
+
+- 想了下java该如何设计计数器
+
+  - 不是什么i++问题，要考虑并发(线程竞争、可见性等)，也别想着用volatile关键字修饰（做不到并发，只保证可见性）
+
+  - 通过原子类，像AtomicLong，但在高并发场景下Atomic*类效率很低，又如何解决？（用LongAdder代替AtomicLong，都是JUC并发包下原子类中的类）
+
+    > - **单线程下synchronized效率最高**（当时感觉它的效率应该是最差才对）
+    >
+    > - AtomicInteger效率最不稳定，**不同并发情况下表现不一样**：短时间低并发下，效率比synchronized高，有时甚至比LongAdder还高出一点，但是高并发下，性能还不如synchronized，不同情况下性能表现很不稳定
+    >
+    > - LongAdder性能稳定，在各种并发情况下表现都不错，整体表现最好,短时间的低并发下比AtomicInteger性能差一点，长时间高并发下性能最高
+
+  - [Java并发计数器探秘 | 徐靖峰|个人博客 ](https://www.cnkirito.moe/java-concurrent-counter/)
+
+  - [聊聊并发（五）——原子操作的实现原理 ](https://infoq.cn/article/atomic-operation)
+
+- 遇到一个大佬--**占小狼**--，有兴趣可以搜索一波
+
+- 想了下Java 并发会问些什么问题
+  - 锁怎么实现？主要是synchronized、ReentrantLock，有的时候会问volatile、读写锁
+  - 线程池原理，任务工作的流程细致说一遍（会诱导你说出了）
+  - ConcurrentHashMap一定会问，会从HashMap实现原理、线程不安全这个话题切入
+
+- 增加《java 并发编程的艺术》记录（含从其他博客看到的知识点）
+- [java 中的锁 -- 偏向锁、轻量级锁、自旋锁、重量级锁](https://www.jianshu.com/p/78cf35f01b2f) 可以看一下
