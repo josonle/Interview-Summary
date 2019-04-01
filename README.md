@@ -238,3 +238,111 @@
 
 - 增加《java 并发编程的艺术》记录（含从其他博客看到的知识点）
 - [java 中的锁 -- 偏向锁、轻量级锁、自旋锁、重量级锁](https://www.jianshu.com/p/78cf35f01b2f) 可以看一下
+
+### 3-30日
+
+- [《深入理解 Java 内存模型》读书笔记](http://www.54tianzhisheng.cn/2018/02/28/Java-Memory-Model/) ，推荐看这个，《深入理解 Java 内存模型》程晓明 著。引自：[zhisheng](http://www.54tianzhisheng.cn) 
+- [MySQL事务隔离级别与锁的关系](https://www.limisky.com/126.html)
+- [面试中如何应对Java垃圾回收（GC）的问题](https://icyfenix.iteye.com/blog/715301)
+- [20道精选JVM重点面试问题](https://juejin.im/post/5c9ef581f265da308c198bb4)
+- [文件系统和数据库是由于什么原因才选择 B 树或 B+ 树建立索引的？](https://www.zhihu.com/question/62406977)
+
+### 3-31日
+
+- 回顾MapReduce-demo、MapReduce的shuffle过程
+- 回顾hdfs架构及发展
+- 回顾hive架构
+- 回顾spark电影推荐项目，spark原理等
+
+### 4-1日
+
+- 上午心情不太好，焦虑ing。中午快午休时，快手hr打来了电话，约加微信等面试
+- 快手一面记录
+
+上来就敲代码，前后三道
+
+1. 层次遍历二叉树
+
+2. 实现一个线程安全的单例模式，要求是lazy模式，即首次调用再创建对象
+
+   ```
+   
+   public class Single{
+   
+   private static int flag = 0;
+   
+   private static Single single;
+   
+   public  static Single get(){
+   
+   synchronized(this){
+   
+   if(flag==0){
+   
+   single = Single();
+   
+   flag = 1;
+   
+   }
+   
+   return single;
+   
+   }
+   
+   }
+   
+   public Single(){}
+   
+   }
+   ```
+
+3.  两个文本文件（每行一个单词），大小均为10G, 我们需要找出在两个文件中都出现过的单词（需要去重）
+
+      限制：有若干台机器，每台机器内存1G，在不同机器间可任意拷贝文件（并忽略拷贝时间），怎样尽快找到结果
+
+      > 先后问了用大数据框架怎么做？（我谈了MR，如何自定义输入格式分片等）不用大数据框架怎么做？（参考MR思想，用HashMap；也说了可以用字典树Trie）
+
+
+
+   还有就是问Java基础知识
+
+- HashMap和TreeMap区别
+
+  > 可能大数据中TreeMap用的多吧，想不到会比较这两个Map。一上来我就说了继承的类和接口不同（TreeMap可排序，NavigableMap、SortedMap），然后卡着了，一时想不起这两个有啥好比较的。面试官引导了下都说出来了
+
+- JVM类加载七个过程
+
+- JVM垃圾回收过程
+
+  - 什么时候会GC
+  - 什么GC算法
+  - 怎么判断那些对象要gc
+
+  > JVM内存模型（新生代、老年代、Metaspace（或永久代））讲一下，新生代空间不足和晋升老年代时GC，分代GC算法有哪些谈了一下。引用计数法和可达性算法讲了下。
+
+- 多线程聊一下，什么场景用
+
+> 我讲了如何创建线程池，用以数据库连接的用法
+
+- 锁讲一下
+
+> 我谈了synchronized的旧版本和新版本优化（引入锁状态、锁升级等），基于JVM讲了一下，比如对象头含有monitor监视器，synchronized对方法和块的不同指令（monitorenter、monitorexit、ACC_SYNCHRONIZED这些）。然后谈了下ReentrantLock，比较了二者，公平非公平、操作更简单灵活（超时获取锁、轮询锁、中断获取锁等）
+>
+> 面试官又补充问了volatile，我聊了可见性和禁止指令重排
+
+- 大数据
+  - MR的Shuffle过程聊一下（原来看过这里的源码，思路比较清晰）
+  - 然后就是上面哪个文件的思路
+  - MR优化相关
+
+前后一小时左右，自我感觉不错的，问了下面试官，他也说不错，知识面够广，深度也可以。结束时还问了他们组做些什么，用些什么大数据组件
+
+
+
+-  快手二面凉凉啊。。。
+
+一面过后四五分钟就打过来了，发起二面。不想聊，一想起就感觉自己菜的不行，先前还挺高兴的/(ㄒoㄒ)/~~
+
+前面聊得挺好的，面试官也说可以。悲剧的是，他提出敲下代码吧。一上来还好，第二题是创建最小堆，第三题是创建图实现拓扑排序。这两题写的我是一头汗啊，最后还是没写出来。平常项目几乎用不到图，所以没有多用心看，堆也是用java封装好的。
+
+结束时候问了下还有面试的可能吗，听意思是婉拒了，/(ㄒoㄒ)/~~。不多说了，翻数据结构去了。。。

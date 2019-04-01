@@ -1,7 +1,11 @@
 package Leetcode.TreeSolution;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Stack;
+
+import com.sun.corba.se.impl.orbutil.graph.Node;
 
 /**
  * @author josonlee
@@ -27,6 +31,7 @@ public class BSTree<T extends Comparable<T>> {
 	public TNode<T> getRootNode() {
 		return root;
 	}
+
 	public void breadthTravel() {
 		TNode<T> tmpNode = root;
 		LinkedList<TNode<T>> queue = new LinkedList<BSTree<T>.TNode<T>>();
@@ -40,6 +45,7 @@ public class BSTree<T extends Comparable<T>> {
 				queue.offer(curNode.right);
 		}
 	}
+	
 	/**
 	 * 深度遍历
 	 * 递归遍历，前中后（parent节点是前、中，还是最后访问）
@@ -343,6 +349,7 @@ public class BSTree<T extends Comparable<T>> {
 //		System.out.println("\n********");
 //		System.out.println(bstTest.search(10).left.val);
 //		System.out.println("Max val is "+bstTest.findMaxMinVal(true));
-		bstTest.convertToLinkedlist(bstTest.getRootNode());
+//		bstTest.convertToLinkedlist(bstTest.getRootNode());
+		
 	}
 }
