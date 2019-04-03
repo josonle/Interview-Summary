@@ -309,6 +309,35 @@ public class BSTree<T extends Comparable<T>> {
 			}
 		}
 	}
+	
+	/**
+	 * 打印出二叉树中结点值的和为输入整数target的所有路径(从根节点开始)
+	 * @param root
+	 * @param target，强制为int
+	 * @return ArrayList<ArrayList<Integer>>
+	 */
+	public ArrayList<ArrayList<Integer>> FindPath(TNode root,int target) {
+        ArrayList<ArrayList<Integer>> arr = new ArrayList();
+        if(root==null||target<(int)root.val)
+            return arr;
+        find(arr,new ArrayList<Integer>(),root,target);
+        return arr;
+    }
+	public void find(ArrayList<ArrayList<Integer>> arr,ArrayList<Integer> path,TNode node,int target){
+        
+		path.add((int)node.val);
+        if(node.left==null&&node.right==null){//遍历到叶子
+            if(target==(int)node.val)
+                arr.add(path);
+            return;
+        }
+        ArrayList<Integer> path2 = new ArrayList();
+        path2.addAll(path);
+        if(node.left!=null)//判断左，target变成了减掉当前节点值后的target
+            find(arr,path,node.left,target-(int)node.val);
+        if(node.right!=null)//判断右
+            find(arr,path2,node.right,target-(int)node.val);
+    }
 	public static void main(String[] args) {
 //		int[] arr = {4,2,6,5,7,3,1};
 //		BSTree<Integer> bsTree = new BSTree<Integer>();
@@ -330,7 +359,7 @@ public class BSTree<T extends Comparable<T>> {
 //			System.out.println("5 删除OK");
 //			bsTree.breadthTravel();
 //		}
-		int[] arr1 = {2,8,6,5,9,7,3,10};
+		int[] arr1 = {2,8,6,4,9,7,3,10,0,1};
 		BSTree<Integer> bstTest = new BSTree<Integer>();
 		for (int i : arr1) {
 			bstTest.insert(i);
@@ -350,6 +379,13 @@ public class BSTree<T extends Comparable<T>> {
 //		System.out.println(bstTest.search(10).left.val);
 //		System.out.println("Max val is "+bstTest.findMaxMinVal(true));
 //		bstTest.convertToLinkedlist(bstTest.getRootNode());
-		
+		ArrayList<ArrayList<Integer>> arr2 = bstTest.FindPath(bstTest.getRootNode(), 23);
+		System.out.println(arr2.size());
+		System.out.println(arr2.get(0).size());
+		System.out.println(arr2.get(1).size());
+		System.out.println("******");
+		for(int val:arr2.get(0)) {
+			System.out.print(val+"-");
+		}
 	}
 }

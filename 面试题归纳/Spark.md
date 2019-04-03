@@ -123,8 +123,6 @@ join分为两类：map-side join（Map端join）、reduce-side join（Reduce端j
 
 - hive 的元数据存储在 derby 和 MySQL 中有什么区别? 多会话
 
-
-
 - **reduceByKey不是Action操作，reduce是Action操作**
 
 Master 的 **ElectedLeader 事件**后做了哪些操作 (D )

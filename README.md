@@ -346,3 +346,19 @@
 前面聊得挺好的，面试官也说可以。悲剧的是，他提出敲下代码吧。一上来还好，第二题是创建最小堆，第三题是创建图实现拓扑排序。这两题写的我是一头汗啊，最后还是没写出来。平常项目几乎用不到图，所以没有多用心看，堆也是用java封装好的。
 
 结束时候问了下还有面试的可能吗，听意思是婉拒了，/(ㄒoㄒ)/~~。不多说了，翻数据结构去了。。。
+
+
+
+### 4-3日
+
+- 看了下递归的时间复杂度怎么求，[大护法]( https://todebug.com/master-formula-of-recursive/)
+
+  ![深度截图_选择区域_20190403154826](assets/深度截图_选择区域_20190403154826.png)
+
+- 手写最小堆、单双链表、BST
+- [36进制和10进制转换](https://blog.csdn.net/tiguer/article/details/78113466)
+
+- [一起学Hadoop——TotalOrderPartitioner类实现全局排序](https://www.cnblogs.com/airnew/p/9595385.html)
+- [最小堆的实现](https://zhuanlan.zhihu.com/p/37968599)
+- [前k小/大算法](https://blog.csdn.net/jeffleo/article/details/64133292) 和 [第k大数据](https://blog.csdn.net/qq_26286193/article/details/80683004) 
+
