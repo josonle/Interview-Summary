@@ -362,3 +362,11 @@
 - [最小堆的实现](https://zhuanlan.zhihu.com/p/37968599)
 - [前k小/大算法](https://blog.csdn.net/jeffleo/article/details/64133292) 和 [第k大数据](https://blog.csdn.net/qq_26286193/article/details/80683004) 
 
+### 4-5日
+
+- 腾讯笔试
+
+### 4-6日
+
+- 操作系统总结
+- coding
