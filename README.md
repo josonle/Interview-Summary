@@ -369,4 +369,11 @@
 ### 4-6日
 
 - 操作系统总结
+- [操作系统重难点总结](https://xiaoxiyouran.github.io/blogger/docs/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%9D%A2%E8%AF%95%E5%B8%B8%E9%97%AE/20180829_%E5%B8%B8%E9%97%AE%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E9%9D%A2%E8%AF%95%E9%87%8D%E9%9A%BE%E7%82%B9%E6%80%BB%E7%BB%93.html#%E5%9F%BA%E6%9C%AC%E5%88%86%E9%A1%B5%E5%82%A8%E5%AD%98%E7%AE%A1%E7%90%86%E6%96%B9%E5%BC%8F)
+- coding
+- [*java.util.concurrent*并发包使用指南](https://juejin.im/post/5c89c93bf265da2de71391ec)
+
+### 4-7日
+
+- 操作系统总结
 - coding
