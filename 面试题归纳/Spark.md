@@ -152,3 +152,35 @@ C.注册 application D.直接 ALIVE
 reduceByKey适合大数据量，它会预先在本地机器上通过reduceByKey中的lambda函数参数对相同的key做reduce计算，然后在对不同分区上相同的key再次调用lambda函数做reduce计算。
 
 而groupByKey只会将所有k-v对移动，一来网络数据传输成本加大了，二来为了确定k-v对移动到那台机器上去，会对key调用分区算法，当移动的数据量大于单台执行机器内存总量时 Spark 会把数据保存到磁盘上。 不过在保存时每次会处理一个 key 的数据，所以当单个 key 的键值对超过内存容量会存在内存溢出的异常
+
+
+
+***
+
+### Spark中Shuffle类算子有哪些？
+
+#### 聚合类算子
+
+reduceByKey、groupByKey、aggregateByKey、combineByKey
+
+groupByKey返回`（K，Iterable <V>）`，reduceByKey传入一个函数参数返回`（K，V）`
+
+都可以传入自定义的分区器参数Partitioner
+
+#### 其余
+
+- 去重
+  - distinct
+- 排序
+  - sortBy
+  - sortByKey
+- 重分区
+  - repartition
+  - coalesce
+- 集合
+  - intersection
+  - subtract
+  - subtractByKey
+- join
+
+理论上，能不Shuffle操作就不要涉及Shuffle

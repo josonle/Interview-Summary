@@ -25,7 +25,8 @@ public class Main {
 //			System.out.println(stringTokenizer.nextToken());
 //		}
 		
-		System.out.println(41%2);
+//		System.out.println(41%2);
+		System.out.println(1<<30);//2^32大概43亿
 	}
 
 }

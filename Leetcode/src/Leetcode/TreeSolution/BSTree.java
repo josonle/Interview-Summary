@@ -1,11 +1,9 @@
 package Leetcode.TreeSolution;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Stack;
-
-import com.sun.corba.se.impl.orbutil.graph.Node;
 
 /**
  * @author josonlee
@@ -23,6 +21,7 @@ public class BSTree<T extends Comparable<T>> {
 			this.left = left;
 			this.right = right;
 			this.parent = parent;
+			HashMap<TNode<T>, Boolean> m = new HashMap();
 		}
 	}
 
