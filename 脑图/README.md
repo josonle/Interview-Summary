@@ -4,13 +4,17 @@
 
 - Java锁分类.km [在线打开](http://naotu.baidu.com/file/e95180e80ae55448aa7272a4dc721629?token=86ebde83f718c343) 
 
-
+- Java并发.km
+- Java类加载过程.km
+- JVM垃圾回收机制
 
 - MySQL掌握.km [在线打开](http://naotu.baidu.com/file/397f5be4bd76f152ceaba6b705b036cf?token=6c3c7a81d6f16f5b)
   - 涉及InnoDB、MyISAM特点和区别
   - 各大索引分类、区别、优化、使用
   - 行锁、表锁
 
-
+- 操作系统.km
 
 - Hive归纳总结
+
+> 非同步更新。。。
