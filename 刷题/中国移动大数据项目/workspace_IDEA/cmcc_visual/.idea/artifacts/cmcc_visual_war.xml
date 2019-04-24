@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="cmcc_visual:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="cmcc_visual.war">
+      <element id="artifact" artifact-name="cmcc_visual:war exploded" />
+    </root>
+  </artifact>
+</component>
