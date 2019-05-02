@@ -61,3 +61,28 @@ public static int solution1(int[] nums,int k) {
 	}
 ```
 
+### Long转int
+```
+Long a = 123L;
+int b = a.intValue();
+```
+## 190430
+
+## 190501
+
+## 190502
+### 回文系列
+- Topic
+    - 给定一个字符串，验证它是否是回文串，只考虑字母和数字字符，可以忽略字母的大小写。
+	  说明：本题中，我们将空字符串定义为有效的回文串。
+- Topic680：https://leetcode-cn.com/problems/valid-palindrome-ii/
+    * 给定一个非空字符串 s，最多删除一个字符。判断是否能成为回文字符串。
+- Topic9：https://leetcode-cn.com/problems/palindrome-number/
+    * 判断一个整数是否是回文数，进阶：不转为字符串怎么做
+- Topic234：https://leetcode-cn.com/problems/palindrome-linked-list/
+    * 判断回文链表，能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题
+> 思路就是前后遍历，判断是否相等。数字可以转字符串，也可以进行int变换`result = tmp%10+result*10`后判断两数相等否。单链表先找中点，再旋转后半段链表之后判断回文。删一个字符的就是增加一个flag标志用以判断不等时去掉一个字符的子字符串是否相等`solution3(s.substring(i, j))||solution3(s.substring(i+1,j+1))`
+
+### tips
+ASCII码：字符0是48，A是65，a是97
+`‘A’+32`输出并非’a‘，因为会向上转型为int，所以要强制转为char，即`(char)('A'+32)`
