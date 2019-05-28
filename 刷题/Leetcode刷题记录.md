@@ -83,6 +83,67 @@ int b = a.intValue();
     * 判断回文链表，能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题
 > 思路就是前后遍历，判断是否相等。数字可以转字符串，也可以进行int变换`result = tmp%10+result*10`后判断两数相等否。单链表先找中点，再旋转后半段链表之后判断回文。删一个字符的就是增加一个flag标志用以判断不等时去掉一个字符的子字符串是否相等`solution3(s.substring(i, j))||solution3(s.substring(i+1,j+1))`
 
+## 涉及排序数组
+
+- Topic34 <https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/>
+
+在排序数组中查找元素的第一和最后一个出现的位置
+> 就是二分查找，找到后在前后遍历找出起点终点，再break跳出
+
+- Topic80 <https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array-ii/>
+
+删除排序数组中的重复项 II
+> O(n)，通过newLen控制新数组中元素，count保证重复元素不超过两个
+
+## 涉及旋转数组类别
+
+- Topic33 <https://leetcode-cn.com/problems/search-in-rotated-sorted-array/>
+
+搜索旋转排序数组I 
+
+- Topic81 <https://leetcode-cn.com/problems/search-in-rotated-sorted-array-ii/>
+
+搜索旋转排序数组II
+
+
+- Topic153 <https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array/>
+
+寻找旋转排序数组中的最小值I 【数组无重复数据】
+
+- 
+
+> - 旋转排序数组有个特点，从中点划分一定是一半有序，一半无序。无序的一半继续划分一半也是一半有序一半无序
+  - 所以可以用二分法查找，但是有一点要注意，**允不允许重复元素**。允许出现重复时，像1,3,1,1,1这种查找3时不能仅仅凭借二分，因为nums[0]=nums[2]，你无法判断是在mid左侧还是右侧查找，所以考虑相等时i++处理
+
+## 涉及回溯算法
+
+[39.组合总和](https://leetcode-cn.com/problems/combination-sum/)
+
+[40. 组合总和 II](https://leetcode-cn.com/problems/combination-sum-ii/)
+
+[46. 全排列](https://leetcode-cn.com/problems/permutations/)
+
+[47. 全排列 II](https://leetcode-cn.com/problems/permutations-ii/)
+
+[78. 子集](https://leetcode-cn.com/problems/subsets/)
+
+[90. 子集 II](https://leetcode-cn.com/problems/subsets-ii/)
+
+这类题目都是同一类型的,用回溯算法!
+
+其实回溯算法关键在于:不合适就退回上一步
+
+然后通过约束条件, 减少时间复杂度.
+
+
 ### tips
-ASCII码：字符0是48，A是65，a是97
+- ASCII码：字符0是48，A是65，a是97
 `‘A’+32`输出并非’a‘，因为会向上转型为int，所以要强制转为char，即`(char)('A'+32)`
+
+- `List<List<Integer>> list`，向list中添加一个List不能list.add(List)
+```java
+List<List<Integer>> list = new ArrayList<>();
+List<Integer> l1 = new ArrayList<>();
+list.add(l1);//error，这样只是添加了l1的引用，后续修改l1时，值会变
+list.add(new ArrayList<>(l1));//OK
+```
