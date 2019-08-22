@@ -1,4 +1,4 @@
-package Leetcode.ListSolution;
+package cmb.Coding;
 
 //Definition for doubly-linked list listNode.
 class DoublyListNode {

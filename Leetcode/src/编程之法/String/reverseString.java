@@ -1,5 +1,7 @@
 package 编程之法.String;
 
+import sun.management.counter.StringCounter;
+
 /**
  * 旋转字符串，要求时间复杂度O(n)，空间复杂度O(1)。如abcdef旋转为cdefab
  * @author josonlee

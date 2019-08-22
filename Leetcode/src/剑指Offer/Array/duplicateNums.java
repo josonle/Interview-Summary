@@ -23,8 +23,9 @@ public class duplicateNums {
 	 * @return
 	 */
 	public static boolean duplicate(int numbers[],int length,int [] duplication) {
-        if(length==0)
+        if (length == 0) {
             return false;
+        }
         HashMap<Integer,Integer> map = new HashMap<Integer, Integer>(length);
         boolean flag = false;
         

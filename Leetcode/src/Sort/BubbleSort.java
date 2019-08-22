@@ -44,8 +44,9 @@ public class BubbleSort {
 					flag = false;
 				}
 			}
-			if(flag)//flag为true表示未交换已经有序，跳出
+			if(flag) {//flag为true表示未交换已经有序，跳出
 				break;
+			}
 		}
 		System.out.println(Arrays.toString(arr));
 	}
