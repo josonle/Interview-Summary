@@ -10,7 +10,7 @@
 
     <properties>
         <spark.version>2.2.1</spark.version>
-        <mysql.version>5.1.40</mysql.version>
+        <mysql.version>8.0.28</mysql.version>
         <jedis.version>2.9.0</jedis.version>
         <config.version>1.3.3</config.version>
         <fastjson.version>1.2.51</fastjson.version>
